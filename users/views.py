@@ -27,7 +27,7 @@ def login_view(request):
                 return redirect('/posts/feeds/')
             # user가 없을 때(return 값이 없음)
             else:
-                print('해당 사용자가 없습니다')
+                form.add_error(None, '입력한 정보를 다시 확인해주세요.')
 
         # 유효성 검사 실패 or user가 없을 때
         context = {'form': form}
