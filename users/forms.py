@@ -1,4 +1,6 @@
 from django import forms
+from .models import User
+from django.core.exceptions import ValidationError
 
 class LoginForm(forms.Form):
     username = forms.CharField(
@@ -23,5 +25,19 @@ class SignupForm(forms.Form):
     password2 = forms.CharField(
         widget=forms.PasswordInput
     )
-    profile_image = forms.ImageField()
+    profile_image = forms.ImageField(required=False)
     short_description = forms.CharField()
+
+    def clean_username(self):
+        username = self.cleaned_data['username']
+        if User.objects.filter(username=username).exists() :
+            raise ValidationError(f'이미 사용 중인 이름({username})입니다.')
+        return username
+
+    def clean(self):
+        password1 = self.cleaned_data['password1']
+        password2 = self.cleaned_data['password2']
+
+        if password1 != password2 :
+            self.add_error('password2','입력한 비밀번호의 값이 서로 다릅니다.')
+

@@ -55,33 +55,25 @@ def signup(request):
         if form.is_valid():
             username = form.cleaned_data['username']
             password1 = form.cleaned_data['password1']
-            password2 = form.cleaned_data['password2']
             profile_image = form.cleaned_data['profile_image']
             short_description = form.cleaned_data['short_description']
 
-            # 사용자 중복 체크
-            if User.objects.filter(username=username).exists():
-                form.add_error('username', '이미 사용 중인 이름입니다.')
+            User.objects.create_user(
+                username=username,
+                password=password1,
+                profile_image=profile_image,
+                short_description=short_description
+            )
 
-            # 비밀번호 확인
-            if password1 != password2 :
-                form.add_error('password2', '비밀번호가 일치하지 않습니다.')
+            return redirect('/users/login')
 
-            # 에러가 있을 때
-            if form.errors:
-                context = {'form': form}
-                return render(request, 'users/signup.html', context)
+        # is_valid가 False(폼 유효성 검사 탈락)
+        else :
+            return render(request, 'users/signup.html', {'form': form})
 
-            # 에러가 없으면 사용자를 생성하고 로그인 페이지로 이동
-            else :
-                User.objects.create_user(
-                    username=username,
-                    password=password1,
-                    profile_image=profile_image,
-                    short_description=short_description
-                )
-                return redirect('/users/login')
+
     # GET 요청
     else :
         form = SignupForm()
         return render(request, 'users/signup.html', {'form': form})
+
