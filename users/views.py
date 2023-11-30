@@ -53,27 +53,13 @@ def signup(request):
         form = SignupForm(data=request.POST, files=request.FILES)
         # 유효성 검사
         if form.is_valid():
-            username = form.cleaned_data['username']
-            password1 = form.cleaned_data['password1']
-            profile_image = form.cleaned_data['profile_image']
-            short_description = form.cleaned_data['short_description']
-
-            User.objects.create_user(
-                username=username,
-                password=password1,
-                profile_image=profile_image,
-                short_description=short_description
-            )
-
-            return redirect('/users/login')
-
-        # is_valid가 False(폼 유효성 검사 탈락)
-        else :
-            return render(request, 'users/signup.html', {'form': form})
-
+            form.save()
+            return redirect('/users/login/')
 
     # GET 요청
     else :
         form = SignupForm()
-        return render(request, 'users/signup.html', {'form': form})
+
+    # POST 요청에서 에러 발생 or GET 요청일 때
+    return render(request, 'users/signup.html', {'form': form})
 

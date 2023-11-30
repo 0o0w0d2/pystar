@@ -41,3 +41,17 @@ class SignupForm(forms.Form):
         if password1 != password2 :
             self.add_error('password2','입력한 비밀번호의 값이 서로 다릅니다.')
 
+
+    def save(self):
+        username = form.cleaned_data['username']
+        password1 = form.cleaned_data['password1']
+        profile_image = form.cleaned_data['profile_image']
+        short_description = form.cleaned_data['short_description']
+
+        user = User.objects.create_user(
+            username=username,
+            password=password1,
+            profile_image=profile_image,
+            short_description=short_description
+        )
+        return user
