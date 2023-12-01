@@ -1,6 +1,19 @@
 {% extends 'base.html' %}
 {% block content %}
-    <div>Feed Page</div>
-    <div>user : {{ user.username }}</div>
+    <nav>
+        <h1>Pystar</h1>
+    </nav>
+    <div id="feeds" class="post-container">
+        {% for post in posts %}
+        <article class="post">
+            <header class="post-header">
+                {% if post.user.profile_image %}
+                    <img src="{{ post.user.profile_image.url }}">
+                {% endif %}
+                <span>{{ post.user.username }}</span>
+            </header>
+        </article>
+        {% endfor %}
+    </div>
     <a href="/users/logout/">Logout</a>
 {% endblock %}
