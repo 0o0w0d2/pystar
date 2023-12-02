@@ -6,7 +6,7 @@
     </nav>
     <div id="feeds" class="post-container">
         {% for post in posts %}
-        <article class="post">
+        <article class="post" id="post-{{ post.id }}">
             <header class="post-header">
                 {% if post.user.profile_image %}
                     <img src="{{ post.user.profile_image.url }}">
@@ -32,7 +32,7 @@
             </div>
             <div class="post-buttons">
                 <button>Likes(0)</button>
-                <span>Comments(0)</span>
+                <span>Comments({{ post.comment_set.count }})</span>
             </div>
             <div class="post-comments">
                 <ul>
@@ -46,8 +46,13 @@
             </div>
             <small>{{ post.created }}</small>
             <div class="post-comment-create">
-                <input type="text" placeholder="댓글 달기">
-                <button type="submit">게시</button>
+                <form action="/posts/comment_add/" method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="post" value="{{ post.id }}">
+                    {{ comment_form.content }}
+                    <button type="submit">게시</button>
+                </form>
+
             </div>
         </article>
         {% endfor %}
