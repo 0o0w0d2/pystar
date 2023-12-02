@@ -40,6 +40,13 @@
                     <li>
                         <span>{{ comment.user.username }}</span>
                         <span>{{ comment.content }}</span>
+
+                        {% if comment.user == user %}
+                        <form action="/posts/comment_del/{{ comment.id }}/" method="POST">
+                            {% csrf_token %}
+                            <button type="submit">삭제</button>
+                        </form>
+                        {% endif %}
                     </li>
                     {% endfor %}
                 </ul>

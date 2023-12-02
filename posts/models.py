@@ -7,7 +7,7 @@ class Post(models.Model):
     created = models.DateTimeField('생성일', auto_now_add=True)
 
     def __str__(self):
-        return self.content
+        return f'번호: {str(self.id)}, 내용: {self.content}'
 
 class PostImage(models.Model):
     post = models.ForeignKey('posts.Post', verbose_name='포스트', on_delete=models.CASCADE)
@@ -19,5 +19,3 @@ class Comment(models.Model):
     content = models.TextField('내용')
     created = models.DateTimeField('생성일', auto_now_add=True)
 
-    def __str__(self):
-        return self.content
