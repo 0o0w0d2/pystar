@@ -1,7 +1,8 @@
 {% extends 'base.html' %}
 {% block content %}
     <nav>
-        <h1>Pystar</h1>
+        <h1><a href="/posts/feeds/">Pystar</a></h1>
+        <a href="/users/logout/">Logout</a>
     </nav>
     <div id="feeds" class="post-container">
         {% for post in posts %}
@@ -26,6 +27,28 @@
                     </ul>
                 </div>
             </div>
+            <div class="post-content">
+                {{ post.content|linebreaksbr }}
+            </div>
+            <div class="post-buttons">
+                <button>Likes(0)</button>
+                <span>Comments(0)</span>
+            </div>
+            <div class="post-comments">
+                <ul>
+                    {% for comment in post.comment_set.all %}
+                    <li>
+                        <span>{{ comment.user.username }}</span>
+                        <span>{{ comment.content }}</span>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <small>{{ post.created }}</small>
+            <div class="post-comment-create">
+                <input type="text" placeholder="댓글 달기">
+                <button type="submit">게시</button>
+            </div>
         </article>
         {% endfor %}
     </div>
@@ -36,5 +59,5 @@
             new Splide(elms[i]).mount()
         }
     </script>
-    <a href="/users/logout/">Logout</a>
+
 {% endblock %}
