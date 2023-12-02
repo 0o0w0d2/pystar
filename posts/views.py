@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from .models import Post, PostImage, Comment
-from .forms import CommentForm
+from .forms import CommentForm, PostForm
 from django.views.decorators.http import require_POST
 from django.http import HttpResponseRedirect, HttpResponseForbidden
 
@@ -18,6 +18,28 @@ def feeds(request):
     }
 
     return render(request, 'posts/feeds.html', context)
+
+def post_add(request):
+
+    if request.method == 'POST':
+        form = PostForm(data=request.POST)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.user = request.user
+            post.save()
+
+            return redirect('/posts/feeds/')
+
+        else:
+            print('유효하지 않아욤')
+
+
+    else :
+        form = PostForm()
+
+    context = {'form': form}
+    return render(request, 'posts/post_add.html', context)
+
 
 # 댓글 작성 처리를 위한 / POST 요청만 허용
 @require_POST

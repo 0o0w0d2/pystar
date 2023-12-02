@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<nav>
+    <h1>Pystar</h1>
+</nav>
+<div id="post-add">
+    <form action="" method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">작성</button>
+    </form>
+</div>
+
+{% endblock %}
