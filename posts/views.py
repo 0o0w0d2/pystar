@@ -21,18 +21,20 @@ def feeds(request):
 
 def post_add(request):
 
+
     if request.method == 'POST':
         form = PostForm(data=request.POST)
         if form.is_valid():
             post = form.save(commit=False)
             post.user = request.user
             post.save()
+            for image in request.FILES.getlist('images') :
+                PostImage.objects.create(
+                    post=post,
+                    photo=image
+                )
 
-            return redirect('/posts/feeds/')
-
-        else:
-            print('유효하지 않아욤')
-
+            return HttpResponseRedirect(f'/posts/feeds/#post-{post.id}')
 
     else :
         form = PostForm()
