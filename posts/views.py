@@ -3,11 +3,12 @@ from .models import Post, PostImage, Comment
 from .forms import CommentForm, PostForm
 from django.views.decorators.http import require_POST
 from django.http import HttpResponseRedirect, HttpResponseForbidden
+from django.urls import reverse
 
 # Create your views here.
 def feeds(request):
     if not request.user.is_authenticated :
-        return redirect('/users/login/')
+        return redirect('users:login')
 
     comment_form = CommentForm()
     posts = Post.objects.all()
@@ -33,8 +34,8 @@ def post_add(request):
                     post=post,
                     photo=image
                 )
-
-            return HttpResponseRedirect(f'/posts/feeds/#post-{post.id}')
+            url = reverse('posts:feeds') + f'#post-{post.id}'
+            return HttpResponseRedirect(url)
 
     else :
         form = PostForm()
@@ -61,7 +62,8 @@ def comment_add(request):
         comment.save()
 
         # comment에 연결된 post의 id값을 가져와 redirect
-        return HttpResponseRedirect(f'/posts/feeds/#post-{comment.post.id}')
+        url = reverse('posts:feeds') + f'#post-{comment.post.id}'
+        return HttpResponseRedirect(url)
 
 
 @require_POST
@@ -71,7 +73,8 @@ def comment_del(request, comment_id):
 
         if comment.user == request.user :
             comment.delete()
-            return HttpResponseRedirect(f'/posts/feeds/#post-{comment.post.id}')
+            url = reverse('posts:feeds') + f'#post-{comment.post.id}'
+            return HttpResponseRedirect(url)
         else :
             # 요청 데이터는 유효하나 해당 요청을 실행할 권한이 없다(status code:403)
             return HttpResponseForbidden('댓글 삭제 권한이 없습니다.')
