@@ -84,8 +84,13 @@ def comment_del(request, comment_id):
 def tags(request, tag_name):
     # Post와 Tag가 서로 객체 형태로 연결되어있으니, Tag의 name이 tag_name과 같은 Tag 객체를 가져오고,
     # 가져온 Tag를 토대로 Post에서 filter
-    tag = HashTag.objects.get(name=tag_name)
-    posts = Post.objects.filter(tags=tag)
+    try:
+        tag = HashTag.objects.get(name=tag_name)
+    # DoesNotExist error 발생 시, 빈 QuerySet 반환
+    except HashTag.DoesNotExist:
+        posts = Post.objects.none()
+    else :
+        posts = Post.objects.filter(tags=tag)
 
     context = {
         'posts' : posts,
