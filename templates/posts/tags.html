@@ -1,8 +1,26 @@
 {% extends 'base.html' %}
 {% block content %}
-
-<div>
-    tag 검색 페이지
+<nav>
+    <h1><a href="{% url 'posts:feeds' %}">Pystar</a></h1>
+    <a href="{% url 'posts:post_add' %}">글 작성</a>
+    <a href="{% url 'users:logout' %}">logout</a>
+</nav>
+<div id="tags">
+    <header class="tags-header">
+        <h2>#{{ tag_name }}</h2>
+        <div>게시물 {{ posts.count }}</div>
+    </header>
+    <div class="post-grid-container">
+        {% for post in posts %}
+            <div class="post-grid">
+                <!--1. post에 연결된 postimage가 있는지 확인-->
+                <!--2. 해당 postimage가 photo 필드에 사진이 있는지-->
+                {% if post.postimage_set.first and post.postimage_set.first.photo %}
+                <img src="{{ post.postimage_set.first.photo.url }}" alt="">
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
 </div>
 
 {% endblock %}

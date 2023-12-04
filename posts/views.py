@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import Post, PostImage, Comment
+from .models import Post, PostImage, Comment, HashTag
 from .forms import CommentForm, PostForm
 from django.views.decorators.http import require_POST
 from django.http import HttpResponseRedirect, HttpResponseForbidden
@@ -82,5 +82,14 @@ def comment_del(request, comment_id):
 
 
 def tags(request, tag_name):
-    print(tag_name)
-    return render(request, 'posts/tags.html')
+    # Post와 Tag가 서로 객체 형태로 연결되어있으니, Tag의 name이 tag_name과 같은 Tag 객체를 가져오고,
+    # 가져온 Tag를 토대로 Post에서 filter
+    tag = HashTag.objects.get(name=tag_name)
+    posts = Post.objects.filter(tags=tag)
+
+    context = {
+        'posts' : posts,
+        'tag_name': tag_name
+    }
+
+    return render(request, 'posts/tags.html', context)
