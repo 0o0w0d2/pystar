@@ -78,3 +78,9 @@ def comment_del(request, comment_id):
         else :
             # 요청 데이터는 유효하나 해당 요청을 실행할 권한이 없다(status code:403)
             return HttpResponseForbidden('댓글 삭제 권한이 없습니다.')
+
+
+
+def tags(request, tag_name):
+    print(tag_name)
+    return render(request, 'posts/tags.html')
