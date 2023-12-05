@@ -107,3 +107,15 @@ def tags(request, tag_name):
     }
 
     return render(request, 'posts/tags.html', context)
+
+
+def post_detail(request, post_id):
+    post = Post.objects.get(id = post_id)
+    comment_form = CommentForm()
+
+    context = {
+        'post': post,
+        'comment_form': comment_form
+    }
+    print(post)
+    return render(request, 'posts/post_detail.html', context)
