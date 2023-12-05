@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import Post, PostImage, Comment
+from .models import Post, PostImage, Comment, HashTag
 from .forms import CommentForm, PostForm
 from django.views.decorators.http import require_POST
 from django.http import HttpResponseRedirect, HttpResponseForbidden
@@ -21,10 +21,9 @@ def feeds(request):
     return render(request, 'posts/feeds.html', context)
 
 def post_add(request):
-
-
     if request.method == 'POST':
         form = PostForm(data=request.POST)
+
         if form.is_valid():
             post = form.save(commit=False)
             post.user = request.user
@@ -34,6 +33,16 @@ def post_add(request):
                     post=post,
                     photo=image
                 )
+
+            tag_string = request.POST.get('tags')
+            if tag_string :
+                tag_names = [tag.strip() for tag in tag_string.split(',')]
+                for tag_name in tag_names:
+                    # get_or_create로 생성하거나 가져온 HashTag 객체를 post에 tags에 추가
+                    # {get이나 create된 객체}, {생성 여부} = Model.objects.get_or_create
+                    tag, _ = HashTag.objects.get_or_create(name=tag_name)
+                    post.tags.add(tag)
+
             url = reverse('posts:feeds') + f'#post-{post.id}'
             return HttpResponseRedirect(url)
 
@@ -78,3 +87,23 @@ def comment_del(request, comment_id):
         else :
             # 요청 데이터는 유효하나 해당 요청을 실행할 권한이 없다(status code:403)
             return HttpResponseForbidden('댓글 삭제 권한이 없습니다.')
+
+
+
+def tags(request, tag_name):
+    # Post와 Tag가 서로 객체 형태로 연결되어있으니, Tag의 name이 tag_name과 같은 Tag 객체를 가져오고,
+    # 가져온 Tag를 토대로 Post에서 filter
+    try:
+        tag = HashTag.objects.get(name=tag_name)
+    # DoesNotExist error 발생 시, 빈 QuerySet 반환
+    except HashTag.DoesNotExist:
+        posts = Post.objects.none()
+    else :
+        posts = Post.objects.filter(tags=tag)
+
+    context = {
+        'posts' : posts,
+        'tag_name': tag_name
+    }
+
+    return render(request, 'posts/tags.html', context)
