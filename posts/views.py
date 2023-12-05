@@ -21,10 +21,9 @@ def feeds(request):
     return render(request, 'posts/feeds.html', context)
 
 def post_add(request):
-
-
     if request.method == 'POST':
         form = PostForm(data=request.POST)
+
         if form.is_valid():
             post = form.save(commit=False)
             post.user = request.user
@@ -34,6 +33,16 @@ def post_add(request):
                     post=post,
                     photo=image
                 )
+
+            tag_string = request.POST.get('tags')
+            if tag_string :
+                tag_names = [tag.strip() for tag in tag_string.split(',')]
+                for tag_name in tag_names:
+                    # get_or_create로 생성하거나 가져온 HashTag 객체를 post에 tags에 추가
+                    # {get이나 create된 객체}, {생성 여부} = Model.objects.get_or_create
+                    tag, _ = HashTag.objects.get_or_create(name=tag_name)
+                    post.tags.add(tag)
+
             url = reverse('posts:feeds') + f'#post-{post.id}'
             return HttpResponseRedirect(url)
 
