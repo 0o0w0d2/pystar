@@ -50,9 +50,11 @@
             </div>
             <small>{{ post.created }}</small>
             <div class="post-comment-create">
-                <form action="{% url 'posts:comment_add' %}" method="POST">
+                <!-- `action_redirect_url`를 뒤에 붙여 POST해, 다음에 갈 URL 정보를 next 키로 전달 -->
+                <form action="{% url 'posts:comment_add' %}?next={{ action_redirect_url }}" method="POST">
                     {% csrf_token %}
                     <input type="hidden" name="post" value="{{ post.id }}">
+                    {{ action_redirect_url }}
                     {{ comment_form.content }}
                     <button type="submit">게시</button>
                 </form>
