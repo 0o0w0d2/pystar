@@ -1,10 +1,6 @@
-{% extends 'base.html' %}
+{% extends 'base_nav.html' %}
 {% block content %}
 
-<nav>
-    <h1><a href="{% url 'posts:feeds' %}">Pystar</a></h1>
-    <a href="{% url 'users:logout' %}">logout</a>
-</nav>
 <div id="post-add">
     <form action="" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
