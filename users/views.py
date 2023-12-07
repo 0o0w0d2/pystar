@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from .forms import LoginForm, SignupForm
 from .models import User
@@ -63,3 +63,12 @@ def signup(request):
     # POST 요청에서 에러 발생 or GET 요청일 때
     return render(request, 'users/signup.html', {'form': form})
 
+
+def profile(request, user_id):
+    # User 에서 id가 user_id 인 객체를 찾아 리턴, 없을 시 404 Not Found
+    user = get_object_or_404(User, id=user_id)
+    context = {
+        'user' : user
+    }
+
+    return render(request, 'users/profile.html', context)
