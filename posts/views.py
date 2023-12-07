@@ -70,9 +70,15 @@ def comment_add(request):
         # DB에 저장
         comment.save()
 
-        # comment에 연결된 post의 id값을 가져와 redirect
-        url = reverse('posts:feeds') + f'#post-{comment.post.id}'
-        return HttpResponseRedirect(url)
+        # GET으로 'next' 값을 전달받았다면, 전달받은 'next'로 이동
+        # url_next = request.GET.get('next') or reverse("posts:feeds") + f'#post-{comment.post.id}'
+        # 앞의 값이 True면 앞이 할당, False면 뒤가 할당 => Boolean Operation
+        if request.GET.get('next'):
+            url_next = request.GET.get('next')
+        else :
+            url_next = reverse('posts:feeds') + f'#post-{comment.post.id}'
+
+        return HttpResponseRedirect(url_next)
 
 
 @require_POST
@@ -107,3 +113,15 @@ def tags(request, tag_name):
     }
 
     return render(request, 'posts/tags.html', context)
+
+
+def post_detail(request, post_id):
+    post = Post.objects.get(id = post_id)
+    comment_form = CommentForm()
+
+    context = {
+        'post': post,
+        'comment_form': comment_form
+    }
+    print(post)
+    return render(request, 'posts/post_detail.html', context)

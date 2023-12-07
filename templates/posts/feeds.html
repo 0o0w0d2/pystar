@@ -1,73 +1,13 @@
 {% extends 'base.html' %}
+{% load custom_tags %}
 {% block content %}
-    <nav>
-        <h1><a href="{% url 'posts:feeds' %}">Pystar</a></h1>
-        <a href="{% url 'posts:post_add' %}">글 작성</a>
-        <a href="{% url 'users:logout' %}">Logout</a>
-    </nav>
+{% include 'nav.html' %}
+
     <div id="feeds" class="post-container">
         {% for post in posts %}
-        <article class="post" id="post-{{ post.id }}">
-            <header class="post-header">
-                {% if post.user.profile_image %}
-                    <img src="{{ post.user.profile_image.url }}">
-                {% endif %}
-                <span>{{ post.user.username }}</span>
-            </header>
-
-            <div class="post-images splide">
-                <div class="splide__track">
-                    <ul class="splide__list">
-                        {% for image in post.postimage_set.all %}
-                            {% if image.photo %}
-                            <li class="splide__slide">
-                            <img src="{{ image.photo.url }}">
-                            </li>
-                            {% endif %}
-                        {% endfor %}
-                    </ul>
-                </div>
-            </div>
-            <div class="post-content">
-                {{ post.content|linebreaksbr }}
-                <div class="post-tags">
-                    {% for tag in post.tags.all %}
-                    <span><a href="{% url 'posts:tags' tag_name=tag.name %}">#{{ tag.name }}</a></span>
-                {% endfor %}
-                </div>
-            </div>
-            <div class="post-buttons">
-                <button>Likes(0)</button>
-                <span>Comments({{ post.comment_set.count }})</span>
-            </div>
-            <div class="post-comments">
-                <ul>
-                    {% for comment in post.comment_set.all %}
-                    <li>
-                        <span>{{ comment.user.username }}</span>
-                        <span>{{ comment.content }}</span>
-
-                        {% if comment.user == user %}
-                        <form action="{% url 'posts:comment_del' comment_id=comment.id %}" method="POST">
-                            {% csrf_token %}
-                            <button type="submit">삭제</button>
-                        </form>
-                        {% endif %}
-                    </li>
-                    {% endfor %}
-                </ul>
-            </div>
-            <small>{{ post.created }}</small>
-            <div class="post-comment-create">
-                <form action="{% url 'posts:comment_add' %}" method="POST">
-                    {% csrf_token %}
-                    <input type="hidden" name="post" value="{{ post.id }}">
-                    {{ comment_form.content }}
-                    <button type="submit">게시</button>
-                </form>
-
-            </div>
-        </article>
+            <!-- custom template filter 사용 -->
+            {% url 'posts:feeds' as action_redirect_to %}
+            {% include 'posts/post.html' with action_redirect_url=action_redirect_to|concat:'#post-'|concat:post.id %}
         {% endfor %}
     </div>
 
@@ -79,3 +19,13 @@
     </script>
 
 {% endblock %}
+            <!-- add filter 사용  -->
+            <!-- post.id를 문자열로 바꿔서 post_id 변수에 담음 -->
+            <!-- 'posts:feeds' 경로를 action_redirect_to 변수에 담음 -->
+            <!-- action_redirect_to, '#post-', post_id를 더한 값을 action_redirect_url 변수에 담아 -->
+            <!-- posts/post.html에 보냄 -->
+
+            <!-- {% with post.id|stringformat:'s' as post_id %}-->
+            <!-- {% url 'posts:feeds' as action_redirect_to %}-->
+            <!-- {% include 'posts/post.html' with action_redirect_url=action_redirect_to|add:'#post-'|add:post_id %}-->
+            <!-- {% endwith %}-->
