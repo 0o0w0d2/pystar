@@ -4,7 +4,14 @@
 
     <div id="feeds" class="post-container">
         {% for post in posts %}
-            {% include 'posts/post.html' %}
+            <!-- post.id를 문자열로 바꿔서 post_id 변수에 담음 -->
+            <!-- 'posts:feeds' 경로를 action_redirect_to 변수에 담음 -->
+            <!-- action_redirect_to, '#post-', post_id를 더한 값을 action_redirect_url 변수에 담아 -->
+            <!-- posts/post.html에 보냄 -->
+            {% with post.id|stringformat:'s' as post_id %}
+                {% url 'posts:feeds' as action_redirect_to %}
+                {% include 'posts/post.html' with action_redirect_url=action_redirect_to|add: '#post-'|add:post_id %}
+            {% endwith %}
         {% endfor %}
     </div>
 
