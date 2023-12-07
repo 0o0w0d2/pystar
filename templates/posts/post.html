@@ -12,7 +12,7 @@
                         {% for image in post.postimage_set.all %}
                             {% if image.photo %}
                             <li class="splide__slide">
-                            <img src="{{ image.photo.url }}">
+                                <a href="{% url 'posts:post_detail' post_id=post.id %}"><img src="{{ image.photo.url }}"></a>
                             </li>
                             {% endif %}
                         {% endfor %}

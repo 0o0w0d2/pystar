@@ -11,7 +11,7 @@ def feeds(request):
         return redirect('users:login')
 
     comment_form = CommentForm()
-    posts = Post.objects.all()
+    posts = Post.objects.all().order_by('-id')
 
     context = {
         'posts': posts,
@@ -105,7 +105,7 @@ def tags(request, tag_name):
     except HashTag.DoesNotExist:
         posts = Post.objects.none()
     else :
-        posts = Post.objects.filter(tags=tag)
+        posts = Post.objects.filter(tags=tag).order_by('-id')
 
     context = {
         'posts' : posts,
