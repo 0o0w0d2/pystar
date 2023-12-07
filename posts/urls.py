@@ -10,5 +10,6 @@ urlpatterns = [
     path('comment_del/<int:comment_id>/', views.comment_del, name='comment_del'),
     path('post_add/', views.post_add, name='post_add'),
     path('tags/<str:tag_name>/', views.tags, name='tags'),
-    path('<int:post_id>/', views.post_detail, name='post_detail')
+    path('<int:post_id>/', views.post_detail, name='post_detail'),
+    path('<int:post_id>/like/', views.post_like, name='post_like')
 ]

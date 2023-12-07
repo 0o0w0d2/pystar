@@ -8,7 +8,7 @@ class Post(models.Model):
     tags = models.ManyToManyField('posts.HashTag', verbose_name='해시태그 목록', blank=True)
 
     def __str__(self):
-        return f'번호: {str(self.id)}, 내용: {self.content}'
+        return f'번호: {str(self.id)}, 작성자: {self.user.username} 내용: {self.content[:10]}'
 
 class PostImage(models.Model):
     post = models.ForeignKey('posts.Post', verbose_name='포스트', on_delete=models.CASCADE)
