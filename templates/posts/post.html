@@ -54,7 +54,6 @@
                 <form action="{% url 'posts:comment_add' %}?next={{ action_redirect_url }}" method="POST">
                     {% csrf_token %}
                     <input type="hidden" name="post" value="{{ post.id }}">
-                    {{ action_redirect_url }}
                     {{ comment_form.content }}
                     <button type="submit">게시</button>
                 </form>
