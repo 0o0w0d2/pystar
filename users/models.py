@@ -25,7 +25,7 @@ class User(AbstractUser):
     )
 
     def __str__(self):
-        return self.username
+        return f'{self.id}: {self.username}'
 
 
 # 다대다 연결 중개 테이블 직접 생성하기 (관계)

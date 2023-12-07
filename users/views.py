@@ -72,3 +72,11 @@ def profile(request, user_id):
     }
 
     return render(request, 'users/profile.html', context)
+
+
+def followers(request, user_id):
+    return render(request, 'users/followers.html')
+
+
+def following(request, user_id):
+    return render(request, 'users/following.html')

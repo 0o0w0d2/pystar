@@ -1,32 +1,5 @@
-{% extends 'base_nav.html' %}
-{% block content %}
-
-<div id="profile">
-    <div class="info">
-        <!-- 프로필 이미지 영역  -->
-        {% if user.profile_image %}
-            <img src="{{ user.profile_image.url }}">
-        {% endif %}
-
-        <!-- 사용자 정보 영역  -->
-        <div class="info-texts">
-            <h1>{{ user.username }}</h1>
-            <div class="counts">
-                <dl>
-                    <dt>Posts</dt>
-                    <dd>{{ user.post_set.count }}</dd>
-                    <dt>Followers</dt>
-                    <dd>{{ user.followers.count }}</dd>
-                    <dt>Following</dt>
-                    <dd>{{ user.following.count }}</dd>
-                </dl>
-                <div>
-                    <p>{{ user.short_description }}</p>
-                </div>
-            </div>
-
-        </div>
-    </div>
+{% extends 'base_profile.html' %}
+{% block bottom_data %}
 
     <!-- 작성한 post 목록 -->
      <div class="post-grid-container">
@@ -40,9 +13,5 @@
             <p>작성한 게시물이 없습니다.</p>
         {% endfor %}
     </div>
-
-
-</div>
-
 
 {% endblock %}
