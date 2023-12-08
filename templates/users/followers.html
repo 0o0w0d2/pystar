@@ -1,8 +1,23 @@
 {% extends 'base_profile.html' %}
 {% block bottom_data %}
 
-<div>
-  팔로워
+<h2>
+    나를 팔로우하는 사람들
+</h2>
+<div class="relationships">
+    {% for rel in relationships %}
+    <div class="relationship">
+        <a href="{% url 'users:profile' user_id=rel.from_user.id %}">
+                    {% if rel.from_user.profile_image %}
+            <img src="{{ rel.from_user.profile_image.url }}">
+        {% endif %}
+        <div class="relationship-info">
+            <span>{{ rel.from_user.username }}</span>
+            <span>{{ rel.created|date:'y.m.d' }}</span>
+        </div>
+        </a>
+    </div>
+    {% endfor %}
 </div>
 
 {% endblock %}

@@ -74,9 +74,26 @@ def profile(request, user_id):
     return render(request, 'users/profile.html', context)
 
 
+# 사용자를 follow하는
 def followers(request, user_id):
-    return render(request, 'users/followers.html')
+    user = get_object_or_404(User, id=user_id)
+    relationships = user.follower_relationships.all()
 
+    context = {
+        'user': user,
+        'relationships': relationships
+    }
 
+    return render(request, 'users/followers.html', context)
+
+# 사용자가 follow하는
 def following(request, user_id):
-    return render(request, 'users/following.html')
+    user = get_object_or_404(User, id=user_id)
+    relationships = user.following_relationships.all()
+
+    context = {
+        'user': user,
+        'relationships': relationships
+    }
+
+    return render(request, 'users/following.html', context)
