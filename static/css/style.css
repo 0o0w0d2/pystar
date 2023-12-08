@@ -570,3 +570,47 @@ body > nav > a {
 #tags .tags-header {
   margin-bottom: 10px;
 }
+
+
+
+#unfollow {
+  color: #ff797b;
+  background-color: transparent;
+  border: 1px solid #ff797b;
+  border-radius: 10px;
+  font-size: 14px;
+  height: 25px;
+  margin-top: 2px;
+  margin-left: 4px;
+  padding: 0 8px;
+  cursor: pointer;
+  transition-duration: 0.25s;
+  font-weight: bold;
+}
+
+
+#unfollow:hover {
+  background-color: #ff797b;
+  color: white;
+}
+
+#follow {
+  color: #0095f6;
+  background-color: transparent;
+  border: 1px solid #0095f6;
+  border-radius: 10px;
+  font-size: 14px;
+  height: 25px;
+  margin-top: 2px;
+  margin-left: 4px;
+  padding: 0 8px;
+  cursor: pointer;
+  transition-duration: 0.25s;
+  font-weight: bold;
+}
+
+
+#follow:hover {
+  background-color: #0095f6;
+  color: white;
+}

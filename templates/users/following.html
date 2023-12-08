@@ -1,0 +1,22 @@
+{% extends 'base_profile.html' %}
+{% block bottom_data %}
+
+<div class="relationships">
+    {% for rel in relationships %}
+        <div class="relationship">
+            <a href="{% url 'users:profile' user_id=rel.to_user.id %}">
+                {% if rel.to_user.profile_image %}
+                <img src="{{ rel.to_user.profile_image.url }}">
+                {% endif %}
+                <div class="relationship-info">
+                    <span>{{ rel.to_user.username }}</span>
+                    <span>{{ rel.created|date:'y.m.d' }}</span>
+                </div>
+            </a>
+        </div>
+    {% endfor %}
+
+</div>
+
+
+{% endblock %}
