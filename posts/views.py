@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .models import Post, PostImage, Comment, HashTag
 from .forms import CommentForm, PostForm
 from django.views.decorators.http import require_POST
@@ -143,16 +143,25 @@ def post_like(request, post_id):
     return HttpResponseRedirect(url_next)
 
 def post_edit(request, post_id):
-    pass
+    post = Post.objects.get(id=post_id)
+    form = PostForm(instance=post)
+
+    # 해쉬태그도 불러와야함, 사진도 불러와야 함(근데 사진을 불러올 수가 있나?)
+
+    context = {
+        'form': form
+    }
+
+    return render(request, 'posts/post_edit.html', context)
 
 @require_POST
 def post_del(request, post_id):
-    post = Post.objects.get(id=post_id)
+    post = get_object_or_404(Post, id=post_id)
 
     if request.user == post.user:
         post.delete()
         return redirect('posts:feeds')
 
     else:
-        return HttpResponseForbidden('댓글 삭제 권한이 없습니다.')
+        return HttpResponseForbidden('글 삭제 권한이 없습니다.')
 
