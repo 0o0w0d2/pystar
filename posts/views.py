@@ -141,3 +141,18 @@ def post_like(request, post_id):
 
     url_next = request.GET.get('next') or reverse('posts:feeds') + f'#post-{post.id}'
     return HttpResponseRedirect(url_next)
+
+def post_edit(request, post_id):
+    pass
+
+@require_POST
+def post_del(request, post_id):
+    post = Post.objects.get(id=post_id)
+
+    if request.user == post.user:
+        post.delete()
+        return redirect('posts:feeds')
+
+    else:
+        return HttpResponseForbidden('댓글 삭제 권한이 없습니다.')
+

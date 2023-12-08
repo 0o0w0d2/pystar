@@ -250,7 +250,7 @@ article.post header.post-header {
 }
 article.post header.post-header a {
   display: flex;
-  width: 100%;
+  width: 75%;
   flex-direction: row;
   align-items: center;
 }

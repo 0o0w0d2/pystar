@@ -11,5 +11,7 @@ urlpatterns = [
     path('post_add/', views.post_add, name='post_add'),
     path('tags/<str:tag_name>/', views.tags, name='tags'),
     path('<int:post_id>/', views.post_detail, name='post_detail'),
-    path('<int:post_id>/like/', views.post_like, name='post_like')
+    path('<int:post_id>/like/', views.post_like, name='post_like'),
+    path('<int:post_id>/post_del', views.post_del, name='post_del'),
+    path('<int:post_id>/post_edit', views.post_edit, name='post_edit')
 ]

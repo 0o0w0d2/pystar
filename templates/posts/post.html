@@ -7,15 +7,14 @@
                 <span>{{ post.user.username }}</span>
                 </a>
                 {% if request.user == post.user %}
-                <div class="dropdown">
-                <button class="dropbtn">
-                    <span>· · ·</span>
-                </button>
-                <div class="dropdown-content" style="text-align: center;">
-                <a href="#">수정</a>
-                <a href="#" style="color: #ff797b">삭제</a>
-                </div>
-                </div>
+                <form method="POST" action="{% url 'posts:post_edit' post_id=post.id %}">
+                    {% csrf_token %}
+                    <button>수정</button>
+                </form>
+                <form method="POST" action="{% url 'posts:post_del' post_id=post.id %}">
+                    {% csrf_token %}
+                    <button>삭제</button>
+                </form>
                 {% endif %}
             </header>
 
