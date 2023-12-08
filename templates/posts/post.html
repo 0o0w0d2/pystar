@@ -6,6 +6,17 @@
                 {% endif %}
                 <span>{{ post.user.username }}</span>
                 </a>
+                {% if request.user == post.user %}
+                <div class="dropdown">
+                <button class="dropbtn">
+                    <span>· · ·</span>
+                </button>
+                <div class="dropdown-content" style="text-align: center;">
+                <a href="#">수정</a>
+                <a href="#" style="color: #ff797b">삭제</a>
+                </div>
+                </div>
+                {% endif %}
             </header>
 
             <div class="post-images splide">

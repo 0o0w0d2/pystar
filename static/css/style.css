@@ -614,3 +614,45 @@ body > nav > a {
   background-color: #0095f6;
   color: white;
 }
+
+
+.dropdown{
+  position : relative;
+  display : inline-block;
+}
+
+
+.dropbtn{
+  border: none;
+  background-color: inherit;
+  font-weight: 400;
+  color : #ddd;
+  padding : 12px;
+  width : 50px;
+  cursor : pointer;
+  font-size : 12px;
+}
+
+.dropdown-content{
+  display : none;
+  position : absolute;
+  z-index : 1; /*다른 요소들보다 앞에 배치*/
+  background-color: #f9f9f9;
+  min-width : 50px;
+}
+
+.dropdown-content a{
+  display : block;
+  color : rgb(37, 37, 37);
+  font-size: 12px;
+  padding : 10px 0px;
+  justify-content: center;
+}
+
+.dropdown-content a:hover{
+  background-color : #ececec
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
