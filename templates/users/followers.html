@@ -1,14 +1,11 @@
 {% extends 'base_profile.html' %}
 {% block bottom_data %}
 
-<h2>
-    나를 팔로우하는 사람들
-</h2>
 <div class="relationships">
     {% for rel in relationships %}
     <div class="relationship">
         <a href="{% url 'users:profile' user_id=rel.from_user.id %}">
-                    {% if rel.from_user.profile_image %}
+            {% if rel.from_user.profile_image %}
             <img src="{{ rel.from_user.profile_image.url }}">
         {% endif %}
         <div class="relationship-info">
