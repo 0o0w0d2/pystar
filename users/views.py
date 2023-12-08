@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404, reverse
 from django.contrib.auth import authenticate, login, logout
 from .forms import LoginForm, SignupForm
 from .models import User
@@ -97,3 +97,16 @@ def following(request, user_id):
     }
 
     return render(request, 'users/following.html', context)
+
+def follow(request, user_id):
+    user = request.user
+    target_user = get_object_or_404(User, id=user_id)
+
+    if target_user in user.following.all():
+        user.following.remove(target_user)
+
+    else :
+        user.following.add(target_user)
+
+    url = reverse('users:profile', kwargs={'user_id': user_id })
+    return redirect(url)

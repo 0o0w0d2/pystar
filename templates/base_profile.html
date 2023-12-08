@@ -10,7 +10,20 @@
 
         <!-- 사용자 정보 영역  -->
         <div class="info-texts">
-            <h1>{{ user.username }}</h1>
+            <form action="{% url 'users:follow' user_id=user.id %}" method="POST">
+                {% csrf_token %}
+                <h1>{{ user.username }}
+                {% if user != request.user %}
+
+                    {% if user in request.user.following.all %}
+                        <button type="submit" id="unfollow">Unfollow</button>
+                    {% else %}
+                        <button type="submit" id="follow">Follow</button>
+                    {% endif %}
+                {% endif %}
+            </h1>
+            </form>
+
             <div class="counts">
                 <dl>
                     <dt>Posts</dt>
