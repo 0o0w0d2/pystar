@@ -143,13 +143,38 @@ def post_like(request, post_id):
     return HttpResponseRedirect(url_next)
 
 def post_edit(request, post_id):
-    post = Post.objects.get(id=post_id)
-    form = PostForm(instance=post)
+    post = get_object_or_404(Post, id=post_id)
 
-    # 해쉬태그도 불러와야함, 사진도 불러와야 함(근데 사진을 불러올 수가 있나?)
+    if request.method == "POST":
+        form = PostForm(request.POST, instance=post)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.save()
+
+            for image in request.FILES.getlist('images'):
+                PostImage.objects.create(
+                    post=post,
+                    photo=image
+                )
+
+            post.tags.clear()
+
+            tag_string = request.POST.get('tags')
+            tag_names = [tag.strip() for tag in tag_string.split(',')]
+            for tag_name in tag_names:
+                tag, _ = HashTag.objects.get_or_create(name=tag_name)
+                post.tags.add(tag)
+
+
+            return redirect('posts:post_detail', post_id=post_id)
+
+    # GET 요청일 때
+    form = PostForm(instance=post)
+    tags = ', '.join([tag.name for tag in post.tags.all()])
 
     context = {
-        'form': form
+        'form': form,
+        'tags': tags
     }
 
     return render(request, 'posts/post_edit.html', context)
