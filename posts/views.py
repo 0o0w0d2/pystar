@@ -88,8 +88,13 @@ def comment_del(request, comment_id):
 
         if comment.user == request.user :
             comment.delete()
-            url = reverse('posts:feeds') + f'#post-{comment.post.id}'
-            return HttpResponseRedirect(url)
+
+            if request.GET.get('next'):
+                next_url = request.GET.get('next')
+            else:
+                next_url = reverse('posts:feeds') + f'#post-{comment.post.id}'
+
+            return HttpResponseRedirect(next_url)
         else :
             # 요청 데이터는 유효하나 해당 요청을 실행할 권한이 없다(status code:403)
             return HttpResponseForbidden('댓글 삭제 권한이 없습니다.')
