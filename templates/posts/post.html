@@ -1,4 +1,5 @@
-    <article class="post" id="post-{{ post.id }}">
+{% load custom_tags %}
+<article class="post" id="post-{{ post.id }}">
             <header class="post-header">
                 <a href="{% url 'users:profile' user_id=post.user.id %}">
                 {% if post.user.profile_image %}
@@ -52,7 +53,8 @@
             </div>
             <div class="post-comments">
                 <ul>
-                    {% for comment in post.comment_set.all %}
+                    {% if request.resolver_match.url_name == 'feeds' %}
+                    {% for comment in post.comment_set.all|reverse_and_slice:3 %}
                     <li>
                         <span>{{ comment.user.username }}</span>
                         <span>{{ comment.content }}</span>
@@ -70,6 +72,26 @@
                         {% endif %}
                     </li>
                     {% endfor %}
+                    {% else %}
+                    {% for comment in post.comment_set.all|reverse %}
+                    <li>
+                        <span>{{ comment.user.username }}</span>
+                        <span>{{ comment.content }}</span>
+
+                        {% if comment.user == user %}
+                        <form action="{% url 'posts:comment_edit' comment_id=comment.id %}?next={{ action_redirect_url }}" method="POST">
+                            {% csrf_token %}
+                            <button type="submit">수정</button>
+                        </form>
+                        <form action="{% url 'posts:comment_del' comment_id=comment.id %}?next={{ action_redirect_url }}" method="POST">
+                            {% csrf_token %}
+                            <button type="submit">삭제</button>
+                        </form>
+
+                        {% endif %}
+                    </li>
+                    {% endfor %}
+                    {% endif %}
                 </ul>
             </div>
             <small>{{ post.created }}</small>

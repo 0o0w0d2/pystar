@@ -13,6 +13,7 @@ def feeds(request):
     comment_form = CommentForm()
     posts = Post.objects.all().order_by('-id')
 
+
     context = {
         'posts': posts,
         'comment_form': comment_form
@@ -127,12 +128,12 @@ def tags(request, tag_name):
 
 
 def post_detail(request, post_id):
-    post = Post.objects.get(id = post_id)
+    post = Post.objects.get(id=post_id)
     comment_form = CommentForm()
 
     context = {
         'post': post,
-        'comment_form': comment_form
+        'comment_form': comment_form,
     }
     print(post)
     return render(request, 'posts/post_detail.html', context)
