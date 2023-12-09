@@ -58,10 +58,15 @@
                         <span>{{ comment.content }}</span>
 
                         {% if comment.user == user %}
+                        <form action="{% url 'posts:comment_edit' comment_id=comment.id %}?next={{ action_redirect_url }}" method="POST">
+                            {% csrf_token %}
+                            <button type="submit">수정</button>
+                        </form>
                         <form action="{% url 'posts:comment_del' comment_id=comment.id %}?next={{ action_redirect_url }}" method="POST">
                             {% csrf_token %}
                             <button type="submit">삭제</button>
                         </form>
+
                         {% endif %}
                     </li>
                     {% endfor %}

@@ -80,13 +80,19 @@ def comment_add(request):
 
         return HttpResponseRedirect(url_next)
 
+def comment_edit(request, comment_id):
+    comment = get_object_or_404(Comment, id=comment_id)
+    form = CommentForm(instance=comment)
+
+    return redirect('posts:feeds')
+
 
 @require_POST
 def comment_del(request, comment_id):
     if request.method == 'POST':
         comment = Comment.objects.filter(id=comment_id)[0]
 
-        if comment.user == request.user :
+        if comment.user == request.user:
             comment.delete()
 
             if request.GET.get('next'):
