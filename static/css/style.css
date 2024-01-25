@@ -250,7 +250,7 @@ article.post header.post-header {
 }
 article.post header.post-header a {
   display: flex;
-  width: 75%;
+  width: 80%;
   flex-direction: row;
   align-items: center;
 }
@@ -655,4 +655,45 @@ body > nav > a {
 
 .dropdown:hover .dropdown-content {
   display: block;
+}
+
+.edit-btn {
+    color: white;
+    background-color: #0095f6;
+    border: 1px solid #0095f6;
+    border-radius: 8px;
+    font-size: 12px;
+    height: 23px;
+    margin-top: 2px;
+    margin-left: 4px;
+    padding: 0 8px;
+    cursor: pointer;
+    transition-duration: 0.25s;
+    font-weight: bold;
+}
+
+.edit-btn:hover {
+  background-color: white;
+  color: #0095f6;
+}
+
+
+.del-btn {
+    color: white;
+    background-color: #ff797b;
+    border: 1px solid #ff797b;
+    border-radius: 8px;
+    font-size: 12px;
+    height: 23px;
+    margin-top: 2px;
+    margin-left: 4px;
+    padding: 0 8px;
+    cursor: pointer;
+    transition-duration: 0.25s;
+    font-weight: bold;
+}
+
+.del-btn:hover {
+  background-color: white;
+  color: #ff797b;
 }

@@ -10,11 +10,11 @@
                 {% if request.user == post.user %}
                 <form method="POST" action="{% url 'posts:post_edit' post_id=post.id %}">
                     {% csrf_token %}
-                    <button>수정</button>
+                    <button class="edit-btn">수정</button>
                 </form>
                 <form method="POST" action="{% url 'posts:post_del' post_id=post.id %}">
                     {% csrf_token %}
-                    <button>삭제</button>
+                    <button class="del-btn" type="submit">삭제</button>
                 </form>
                 {% endif %}
             </header>
